@@ -5,6 +5,10 @@ const endpoints = Router()
 
 
 
+endpoints.get("/deucerto", (req,res) =>{
+    res.status(200).send("deu certo")
+})
+
 
 
 

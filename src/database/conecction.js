@@ -4,6 +4,7 @@ const conection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'barbershop',
+  password: `8823`,
   waitForConnections: true,
   connectionLimit: 10,
   maxIdle: 10,
@@ -13,6 +14,8 @@ const conection = mysql.createConnection({
   keepAliveInitialDelay: 0
 })
 
+
+console.log(`database conected`)
 
 
 export default conection;

@@ -2,8 +2,8 @@ import "dotenv/config"
 
 import express from "express"
 import cors from "cors"
-import controllers from "./controllers/clientesController.js"
-
+import routes from "./routes/routes.js"
+import conection from "./database/conecction.js"
 
 
 
@@ -12,8 +12,7 @@ const server = express()
 
 server.use(cors())
 server.use(express.json())
-server.use(controllers)
-
+routes(server)
 
 
 const PORTA = process.env.PORTA
