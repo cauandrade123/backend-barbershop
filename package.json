@@ -1,0 +1,28 @@
+{
+  "name": "backend-barbearia",
+  "version": "1.0.0",
+  "description": "A web api using nodeJS, mysql, docker, aws, and gateway of payment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cauandrade123/backend-barbershop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/cauandrade123/backend-barbershop/issues"
+  },
+  "homepage": "https://github.com/cauandrade123/backend-barbershop#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mysql2": "^3.16.1",
+    "nodemon": "^3.1.11"
+  }
+}
