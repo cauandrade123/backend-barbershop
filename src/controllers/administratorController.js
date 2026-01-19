@@ -5,9 +5,6 @@ const endpoints = Router()
 
 
 
-endpoints.get("/deucerto", (req,res) =>{
-    
-})
 
 
 
@@ -17,4 +14,4 @@ endpoints.get("/deucerto", (req,res) =>{
 
 
 
-export default endpoints;
+export default endpoints
