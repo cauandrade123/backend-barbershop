@@ -15,5 +15,24 @@ export async function criarUsuario(usuario) {
 
     return info.insertId;
 
+}
+
+
+
+export async function LogarUsuario(usuario){
+    const SQL = `
+    select*from clientes
+    where email  = ? AND  telefone =?
+    `
+
+
+    let registro = await conection.query(SQL, [usuario.email, usuario.telefone]);
+
+    if (registro.length === 0) {
+        return null;
+    }
+
+    return registro[0];
+
 
 }

@@ -1,20 +1,24 @@
 import 'dotenv/config'
-import jwt from  'jsonwebtoken'
+import jwt from 'jsonwebtoken'
+
+
 
 export default function authenticateToken(req, res, next) {
-    const token = req.headers['authorization']?.split(' ')[1];
-    console.log("Token recebido:", token); 
-    if (!token) {
-        return res.sendStatus(401); 
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.sendStatus(401);
     }
 
-    jwt.verify(token, process.env.JWT_SECRET2, (err, user) => {
+    const token = authHeader.split(" ")[1];
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, payload) => {
         if (err) {
             console.error("Token inválido:", err);
             return res.sendStatus(403);
         }
-        req.user = user;
+
+        req.user = payload;
         next();
     });
-    
 }
