@@ -1,18 +1,20 @@
 import { Router } from "express";
 import authenticateToken from "../utils/jwt.js"
-import MarcarServico from "../repository/agendamentoRepository.js"
+import {MarcarServico} from "../repository/agendamentoRepository.js"
 
 const endpoints = Router()
 
 
 endpoints.post('/marcarservico', authenticateToken, async (req, res) => {
-  try {
 
+  try {
     console.log("USER ID NO AGENDAMENTO:", req.userId);
     console.log("BODY RECEBIDO:", req.body);
 
+    let clienteId = req.userId;
+      
     const escolhaServico = {
-      cliente_id: req.userId,
+      cliente_id: clienteId,
       servico_id: req.body.servico_id,
       data_agendamento: req.body.data_agendamento,
       hora_agendamento: req.body.hora_agendamento

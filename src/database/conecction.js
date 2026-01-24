@@ -1,4 +1,4 @@
-import mysql from 'mysql2/promise.js';
+import mysql from 'mysql2/promise';
 
 
 const conection = mysql.createPool({
@@ -21,7 +21,10 @@ const conection = mysql.createPool({
 })
 
 
-console.log(`database conected`)
-
+if(conection.connect = true){
+    console.log(`db conected`)
+}else{
+    console.log(`failed`)
+}
 
 export default conection;
