@@ -1,6 +1,7 @@
 import { Router } from "express";
 import authenticateToken from "../utils/jwt.js"
-import {MarcarServico} from "../repository/agendamentoRepository.js"
+import * as repositoryFunctions from "../repository/agendamentoRepository.js"
+
 
 const endpoints = Router()
 
@@ -20,7 +21,7 @@ endpoints.post('/marcarservico', authenticateToken, async (req, res) => {
       hora_agendamento: req.body.hora_agendamento
     };
 
-    const SalvarServico = await MarcarServico(escolhaServico);
+    const SalvarServico = await repositoryFunctions.MarcarServico(escolhaServico);
 
     return res.status(201).json({
       id: SalvarServico,
@@ -35,12 +36,57 @@ endpoints.post('/marcarservico', authenticateToken, async (req, res) => {
 
 
 
+endpoints.get("/meus/agendamentos", authenticateToken,async (req, resp)=>{
 
-endpoints.get(`/listaragendamentos`, (req,res)=>{
-    
+   try {
+     let  MeusAgendamentos = req.userId;
+ 
+     let listarMeusAgendamentos = await repositoryFunctions.listarMeusAgendamentos(MeusAgendamentos)
+
+     resp.status(200).send(listarMeusAgendamentos)
+ 
+   } catch (error) {
+
+      console.error(error)
+      resp.status(500).send({"Erro":error})
+
+    }
+
 })
 
 
+
+
+endpoints.patch("/agendamentos/:id/remarcar", authenticateToken, async (req, resp)=>{
+
+      try {
+        
+        let AlterarData = req.body;
+
+        let clienteId = req.userId;
+
+        let idAgendamento = req.params.id
+
+        let remarcarData = await repositoryFunctions.RemarcarData(AlterarData, idAgendamento, clienteId)
+
+        if(remarcarData === 0){
+          return resp.status(404).send({
+              erro: "Agendamento não encontrado ou não pertencente ao cliente"
+          })
+        }
+
+        resp.status(200).send({
+            mensagem: "Data remarcada com sucesso"
+        })
+        
+      } catch (error) {
+            console.error(error)
+            resp.status(500).send({
+              "Erro": "Erro interno!"
+            })
+      }
+
+})
 
 
 

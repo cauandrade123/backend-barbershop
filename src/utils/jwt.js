@@ -18,8 +18,9 @@ export default function authenticateToken(req, res, next) {
       return res.status(403).json({ erro: "Token inválido" });
     }
 
-    // 🔥 AQUI É O PONTO CHAVE
+    //  AQUI É O PONTO CHAVE
     req.userId = decoded.id;
+    req.role = decoded.role;
 
     console.log("req.userId definido como:", req.userId);
 
@@ -31,8 +32,4 @@ export default function authenticateToken(req, res, next) {
 
 
 
-// export default function isAdmin(req, res, next){
 
-  
-
-// }
