@@ -15,7 +15,7 @@ server.use(express.json())
 routes(server)
 
 
-const PORTA = process.env.PORTA
+const PORTA = process.env.PORTA || 3000;
 server.listen(PORTA, () =>{
     console.log(`api subiu na ` + PORTA)
 })

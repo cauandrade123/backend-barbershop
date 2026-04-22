@@ -4,7 +4,8 @@
   "description": "A web api using nodeJS, mysql, docker, aws, and gateway of payment",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"no tests\""
+    "test": "echo \"no tests\"",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
