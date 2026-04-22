@@ -3,33 +3,23 @@ import jwt from 'jsonwebtoken'
 
 
 export default function authenticateToken(req, res, next) {
-    console.log("🔥 MIDDLEWARE JWT EXECUTOU");
     const authHeader = req.headers.authorization;
-    console.log("AUTH HEADER:", authHeader);
     
-  if (!authHeader) {
-    return res.status(401).json({ erro: "Token não enviado" });
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ erro: "Token inválido" });
+    if (!authHeader) {
+        return res.status(401).json({ erro: "Token não enviado" });
     }
 
-    //  AQUI É O PONTO CHAVE
-    req.userId = decoded.id;
-    req.role = decoded.role;
+    const token = authHeader.split(" ")[1];
 
-    console.log("req.userId definido como:", req.userId);
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ erro: "Token inválido ou expirado" });
+        }
 
-    next();
-  });
+        // Armazena os dados do token na requisição
+        req.userId = decoded.id;
+        req.role = decoded.role; // Aqui pegamos o 'admin' ou 'user' que colocamos no login
+
+        next();
+    });
 }
-
-
-
-
-
-

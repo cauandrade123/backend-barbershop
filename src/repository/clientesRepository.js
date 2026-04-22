@@ -1,5 +1,5 @@
 import conection from "../database/conecction.js";
-
+import bcrypt from "bcrypt";
 
 
 export async function criarUsuario(usuario) {
@@ -9,11 +9,23 @@ export async function criarUsuario(usuario) {
     values(?,?,?,?)
     `
 
-    let registro = await conection.query(SQL,[usuario.nome, usuario.email, usuario.telefone, usuario.senha])
+    const senhaHash = await bcrypt.hash(usuario.senha, 10);
 
-    let info = registro[0]
 
-    return info.insertId;
+    try {
+      
+          let [registro] = await conection.query(SQL,[usuario.nome, usuario.email, usuario.telefone, senhaHash])
+      
+          return registro.insertId;
+
+    } catch (err) {
+
+          if (err.code === "ER_DUP_ENTRY") {
+            throw new Error("Email já cadastrado");
+          }
+
+        throw err;
+      }
 
 }
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as repositoryFunctions from "../repository/clientesRepository.js" 
 import jwt from 'jsonwebtoken';
+import bcrypt from "bcrypt"
 import authenticateToken from "../utils/jwt.js";
 
 
@@ -29,21 +30,33 @@ endpoints.post("/cadastro", async (req,resp) =>{
 endpoints.post("/login", async (req, resp) => {
   try {
     const infoUser = req.body;
+
     const usuario = await repositoryFunctions.LogarUsuario(infoUser);
 
     if (!usuario) {
-      return resp.status(401).json({ erro: "Usuário ou senha inválidos" });
+      throw new Error("Email ou senha inválidos");
+    }
+ 
+  const senhaCorreta = await bcrypt.compare(senhaDigitada, usuario.senha);
+
+    if (!senhaCorreta) {
+      throw new Error("Email ou senha inválidos");
     }
 
-    // Agora usuario.id vai funcionar porque 'usuario' é o objeto da linha
+
     const token = jwt.sign(
-      { id: usuario.id }, 
+      { id: usuario.id, role: userRole }, 
       process.env.JWT_SECRET,
       { expiresIn: "32d" }
     );
 
     console.log("ID DO USUÁRIO NO LOGIN:", usuario.id);
-    return resp.status(200).json({ token });
+
+
+        resp.status(200).send({
+            token: token, usuario: {nome: usuario.nome, role: userRole}
+        });
+        
 
   } catch (error) {
     console.error(error);

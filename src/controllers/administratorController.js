@@ -7,7 +7,7 @@ const endpoints = Router()
 
 
 
-endpoints.get("/listar/todos/agendamentos",isAdmin, authenticateToken, async (req,resp)=>{
+endpoints.get("/listar/todos/agendamentos", authenticateToken, isAdmin, async (req,resp)=>{
     try {
         const dados = listarTodosAgendamentos()
 
