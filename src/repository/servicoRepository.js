@@ -1,21 +1,21 @@
 import conection from "../database/conecction.js";
 
 
-export default async function adicionarServico(servico){
-  
+export async function adicionarServico(servico) {
+
+    let SQL = `
+      INSERT INTO servicos (nome, preco)
+      VALUES (?, ?)
+    `;
+
     try {
-         let SQL = `INSERT INTO servicos(nome, preco)
-          VALUES(?,?)`
-        
-          let registro = await conection.query(SQL, [servico.nome, servico.preco])
-        
-          let info = registro[0]
-        
-          return info.insertId
-    
+        let [registro] = await conection.query(SQL, [servico.nome, servico.preco]);
+        return registro.insertId;
+
     } catch (error) {
-      console.error(error)
-      return error
+        if (error.code === "ER_DUP_ENTRY") {
+            throw new Error("Esse serviço já está cadastrado");
+        }
+        throw error;
     }
-  
 }

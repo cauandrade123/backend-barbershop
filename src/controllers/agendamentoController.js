@@ -1,95 +1,84 @@
 import { Router } from "express";
-import authenticateToken from "../utils/jwt.js"
-import * as repositoryFunctions from "../repository/agendamentoRepository.js"
+import authenticateToken from "../utils/jwt.js";
+import * as agendamentoService from "../services/agendamentoService.js";
 
-
-const endpoints = Router()
+const endpoints = Router();
 
 
 endpoints.post('/marcarservico', authenticateToken, async (req, res) => {
+    try {
+          const clienteId = req.userId;
+          const { servico_id, data_agendamento, hora_agendamento } = req.body;
 
-  try {
-    console.log("USER ID NO AGENDAMENTO:", req.userId);
-    console.log("BODY RECEBIDO:", req.body);
+          const idCriado = await agendamentoService.marcarServico(
+            clienteId,
+            servico_id,
+            data_agendamento,
+            hora_agendamento
+          );
 
-    let clienteId = req.userId;
-      
-    const escolhaServico = {
-      cliente_id: clienteId,
-      servico_id: req.body.servico_id,
-      data_agendamento: req.body.data_agendamento,
-      hora_agendamento: req.body.hora_agendamento
-    };
+        return res.status(201).json({
+          id: idCriado,
+          message: "Horário agendado!"
+        });
 
-    const SalvarServico = await repositoryFunctions.MarcarServico(escolhaServico);
-
-    return res.status(201).json({
-      id: SalvarServico,
-      message: "Horário agendado!"
-    });
-
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ erro: "Erro interno" });
-  }
+      } catch (error) {
+        console.error(error);
+        const status = error.statusCode || 500;
+        return res.status(status).json({ erro: error.message || "Erro interno" });
+      }
 });
 
 
 
-endpoints.get("/meus/agendamentos", authenticateToken,async (req, resp)=>{
+endpoints.get("/meus/agendamentos", authenticateToken, async (req, resp) => {
+  try {
+    const clienteId = req.userId;
+    const agendamentos = await agendamentoService.listarMeusAgendamentos(clienteId);
 
-   try {
-     let  MeusAgendamentos = req.userId;
- 
-     let listarMeusAgendamentos = await repositoryFunctions.listarMeusAgendamentos(MeusAgendamentos)
+    resp.status(200).send(agendamentos);
 
-     resp.status(200).send(listarMeusAgendamentos)
- 
-   } catch (error) {
-
-      console.error(error)
-      resp.status(500).send({"Erro":error})
-
-    }
-
-})
+  } catch (error) {
+    console.error(error);
+    const status = error.statusCode || 500;
+    resp.status(status).json({ erro: error.message || "Erro interno" });
+  }
+});
 
 
+endpoints.get("/servicos", async (req, resp) => {
+  try {
+    const servicos = await agendamentoService.listarServicos();
+    resp.status(200).send(servicos);
+
+  } catch (error) {
+    console.error(error);
+    resp.status(500).json({ erro: "Erro interno" });
+  }
+});
 
 
-endpoints.patch("/agendamentos/:id/remarcar", authenticateToken, async (req, resp)=>{
+endpoints.patch("/agendamentos/:id/remarcar", authenticateToken, async (req, resp) => {
+  try {
+    const clienteId = req.userId;
+    const idAgendamento = req.params.id;
+    const { data_agendamento, hora_agendamento } = req.body;
 
-      try {
-        
-        let AlterarData = req.body;
+    await agendamentoService.remarcarAgendamento(
+      idAgendamento,
+      clienteId,
+      data_agendamento,
+      hora_agendamento
+    );
 
-        let clienteId = req.userId;
+    resp.status(200).send({ mensagem: "Data remarcada com sucesso" });
 
-        let idAgendamento = req.params.id
-
-        let remarcarData = await repositoryFunctions.RemarcarData(AlterarData, idAgendamento, clienteId)
-
-        if(remarcarData === 0){
-          return resp.status(404).send({
-              erro: "Agendamento não encontrado ou não pertencente ao cliente"
-          })
-        }
-
-        resp.status(200).send({
-            mensagem: "Data remarcada com sucesso"
-        })
-        
-      } catch (error) {
-            console.error(error)
-            resp.status(500).send({
-              "Erro": "Erro interno!"
-            })
-      }
-
-})
-
-
-
+  } catch (error) {
+    console.error(error);
+    const status = error.statusCode || 500;
+    resp.status(status).json({ erro: error.message || "Erro interno" });
+  }
+});
 
 
 export default endpoints;
