@@ -27,51 +27,41 @@ endpoints.post("/cadastro", async (req,resp) =>{
 
 
 
+
 endpoints.post("/login", async (req, resp) => {
   try {
     const infoUser = req.body;
+    const senhaDigitada = infoUser.senha;
 
     const usuario = await repositoryFunctions.LogarUsuario(infoUser);
 
     if (!usuario) {
-      throw new Error("Email ou senha inválidos");
+      return resp.status(401).json({ erro: "Email ou senha inválidos" });
     }
- 
-  const senhaCorreta = await bcrypt.compare(senhaDigitada, usuario.senha);
+
+    const senhaCorreta = await bcrypt.compare(senhaDigitada, usuario.senha);
 
     if (!senhaCorreta) {
-      throw new Error("Email ou senha inválidos");
+      return resp.status(401).json({ erro: "Email ou senha inválidos" });
     }
 
+    const userRole = usuario.isAdmin ? "admin" : "cliente";
 
     const token = jwt.sign(
-      { id: usuario.id, role: userRole }, 
+      { id: usuario.id, role: userRole },
       process.env.JWT_SECRET,
       { expiresIn: "32d" }
     );
 
-    console.log("ID DO USUÁRIO NO LOGIN:", usuario.id);
-
-
-        resp.status(200).send({
-            token: token, usuario: {nome: usuario.nome, role: userRole}
-        });
-        
-
+    resp.status(200).send({
+      token: token,
+      usuario: { nome: usuario.nome, role: userRole },
+    });
   } catch (error) {
     console.error(error);
     return resp.status(500).json({ erro: "Erro interno no servidor" });
   }
 });
-
-
-
-
-
-
-
-
-
 
 
 
