@@ -7,6 +7,7 @@ const endpoints = Router();
 
 endpoints.post('/marcarservico', authenticateToken, async (req, res) => {
     try {
+      
           const clienteId = req.userId;
           const { servico_id, data_agendamento, hora_agendamento } = req.body;
 
@@ -82,3 +83,5 @@ endpoints.patch("/agendamentos/:id/remarcar", authenticateToken, async (req, res
 
 
 export default endpoints;
+
+

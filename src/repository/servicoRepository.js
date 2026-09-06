@@ -1,4 +1,5 @@
 import conection from "../database/conecction.js";
+import { createHttpError } from "../utils/httpError.js";
 
 
 export async function adicionarServico(servico) {
@@ -14,7 +15,7 @@ export async function adicionarServico(servico) {
 
     } catch (error) {
         if (error.code === "ER_DUP_ENTRY") {
-            throw new Error("Esse serviço já está cadastrado");
+            throw createHttpError(409, "Esse serviço já está cadastrado");
         }
         throw error;
     }
