@@ -2,7 +2,7 @@ import { Router } from "express";
 import * as repositoryFunctions from "../repository/clientesRepository.js" 
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt"
-import authenticateToken from "../utils/jwt.js";
+import { validarCadastro, validarLogin } from "../utils/validation.js";
 
 
 const endpoints = Router()
@@ -11,7 +11,7 @@ const endpoints = Router()
 endpoints.post("/cadastro", async (req,resp) =>{
     try {
 
-        let usuario = req.body;
+        const usuario = validarCadastro(req.body);
 
         let IdCriado = await repositoryFunctions.criarUsuario(usuario)
 
@@ -21,7 +21,7 @@ endpoints.post("/cadastro", async (req,resp) =>{
 
     } catch (error) {
         console.error(error);
-        return resp.status(500).json({ erro: "Erro interno" });
+        return resp.status(error.statusCode || 500).json({ erro: error.statusCode ? error.message : "Erro interno" });
     }
 })
 
@@ -30,10 +30,10 @@ endpoints.post("/cadastro", async (req,resp) =>{
 
 endpoints.post("/login", async (req, resp) => {
   try {
-    const infoUser = req.body;
+    const infoUser = validarLogin(req.body);
     const senhaDigitada = infoUser.senha;
 
-    const usuario = await repositoryFunctions.LogarUsuario(infoUser);
+    const usuario = await repositoryFunctions.LogarUsuario(infoUser.email);
 
     if (!usuario) {
       return resp.status(401).json({ erro: "Email ou senha inválidos" });
@@ -45,21 +45,19 @@ endpoints.post("/login", async (req, resp) => {
       return resp.status(401).json({ erro: "Email ou senha inválidos" });
     }
 
-    const userRole = usuario.isAdmin ? "admin" : "cliente";
-
     const token = jwt.sign(
-      { id: usuario.id, role: userRole },
+      { id: usuario.id },
       process.env.JWT_SECRET,
-      { expiresIn: "32d" }
+      { expiresIn: process.env.JWT_EXPIRES_IN || "8h" }
     );
 
     resp.status(200).send({
       token: token,
-      usuario: { nome: usuario.nome, role: userRole },
+      usuario: { nome: usuario.nome, role: usuario.isAdmin ? "admin" : "cliente" },
     });
   } catch (error) {
     console.error(error);
-    return resp.status(500).json({ erro: "Erro interno no servidor" });
+    return resp.status(error.statusCode || 500).json({ erro: error.statusCode ? error.message : "Erro interno no servidor" });
   }
 });
 
