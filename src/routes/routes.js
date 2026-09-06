@@ -1,5 +1,5 @@
 import agendamentoController from "../controllers/agendamentoController.js"
-import pagamentoController from "../controllers/pagamentocontroller.js"
+import pagamentoController from "../controllers/pagamentoController.js"
 import clientesController from "../controllers/clientesController.js"
 import servicosController from "../controllers/servicosController.js"
 import administratorController from "../controllers/administratorController.js"
