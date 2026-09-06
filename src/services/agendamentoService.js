@@ -1,42 +1,31 @@
 import * as repositoryFunctions from "../repository/agendamentoRepository.js";
+import { createHttpError } from "../utils/httpError.js";
+import { validarNovoAgendamento, validarRemarcacao } from "../utils/validation.js";
 
 export async function marcarServico(clienteId, servico_id, data_agendamento, hora_agendamento) {
-
-    if (!servico_id || !data_agendamento || !hora_agendamento) {
-        const erro = new Error("Todos os campos são obrigatórios");
-        erro.statusCode = 400;
-        throw erro;
-    }
-
-    const servicoExiste = await repositoryFunctions.verificarServicoExiste(servico_id);
-
-    if (!servicoExiste) {
-        const erro = new Error("Serviço inválido. Selecione um serviço da lista.");
-        erro.statusCode = 400;
-        throw erro;
-    }
-
-    const horarioOcupado = await repositoryFunctions.verificarHorarioOcupado(
+    const dadosAgendamento = validarNovoAgendamento({
         servico_id,
         data_agendamento,
-        hora_agendamento,
-        null
-    );
+        hora_agendamento
+    });
 
-    if (horarioOcupado) {
-        const erro = new Error("Esse horário já está ocupado para esse serviço. Escolha outro.");
-        erro.statusCode = 409;
-        throw erro;
+    const servicoExiste = await repositoryFunctions.verificarServicoExiste(dadosAgendamento.servico_id);
+
+    if (!servicoExiste) {
+        throw createHttpError(400, "Serviço inválido. Selecione um serviço da lista.");
     }
 
     const escolhaServico = {
         cliente_id: clienteId,
-        servico_id,
-        data_agendamento,
-        hora_agendamento
+        ...dadosAgendamento
     };
 
-    return await repositoryFunctions.MarcarServico(escolhaServico);
+    const idCriado = await repositoryFunctions.marcarServicoSeHorarioDisponivel(escolhaServico);
+    if (!idCriado) {
+        throw createHttpError(409, "Esse horário já está ocupado para esse serviço. Escolha outro.");
+    }
+
+    return idCriado;
 }
 
 
@@ -51,47 +40,22 @@ export async function listarServicos() {
 
 
 export async function remarcarAgendamento(idAgendamento, clienteId, data_agendamento, hora_agendamento) {
-
-    if (!data_agendamento || !hora_agendamento) {
-        const erro = new Error("Data e hora são obrigatórios");
-        erro.statusCode = 400;
-        throw erro;
-    }
-
-    const servico_id = await repositoryFunctions.buscarServicoDoAgendamento(idAgendamento);
-
-    if (!servico_id) {
-        const erro = new Error("Agendamento não encontrado");
-        erro.statusCode = 404;
-        throw erro;
-    }
-
-    const horarioOcupado = await repositoryFunctions.verificarHorarioOcupado(
-        servico_id,
+    const dadosRemarcacao = validarRemarcacao(idAgendamento, {
         data_agendamento,
-        hora_agendamento,
-        idAgendamento
-    );
+        hora_agendamento
+    });
 
-    if (horarioOcupado) {
-        const erro = new Error("Esse horário já está ocupado. Escolha outro.");
-        erro.statusCode = 409;
-        throw erro;
-    }
-
-    const novaData = {
-        data_agendamento,
-        hora_agendamento,
-        id: idAgendamento,
+    const resultado = await repositoryFunctions.remarcarSeHorarioDisponivel({
+        ...dadosRemarcacao,
         cliente_id: clienteId
-    };
+    });
 
-    const linhasAfetadas = await repositoryFunctions.RemarcarData(novaData);
+    if (resultado === "ocupado") {
+        throw createHttpError(409, "Esse horário já está ocupado. Escolha outro.");
+    }
 
-    if (linhasAfetadas === 0) {
-        const erro = new Error("Agendamento não encontrado ou não pertencente ao cliente");
-        erro.statusCode = 404;
-        throw erro;
+    if (resultado === "nao_encontrado") {
+        throw createHttpError(404, "Agendamento não encontrado, não pertence ao cliente ou não pode ser remarcado");
     }
 
     return true;

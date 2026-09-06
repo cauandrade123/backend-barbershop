@@ -2,7 +2,7 @@ import mysql from 'mysql2/promise';
 
 
 const conection = mysql.createPool({
-  host: process.env.HOST,
+  host: process.env.DB_HOST || process.env.HOST,
   user: process.env.DB_USER,
   database: process.env.DB_NAME,
   password: process.env.DB_PWD,
@@ -20,11 +20,14 @@ const conection = mysql.createPool({
     }
 })
 
+export async function verificarConexao() {
+  const connection = await conection.getConnection();
 
-if(conection.connect = true){
-    console.log(`db conected`)
-}else{
-    console.log(`failed`)
+  try {
+    await connection.ping();
+  } finally {
+    connection.release();
+  }
 }
 
 export default conection;
