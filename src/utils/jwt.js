@@ -1,5 +1,5 @@
-import 'dotenv/config'
 import jwt from 'jsonwebtoken'
+import config from '../config.js'
 
 
 export default function authenticateToken(req, res, next) {
@@ -11,7 +11,7 @@ export default function authenticateToken(req, res, next) {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, config.jwt.segredo);
         req.userId = decoded.id;
         return next();
     } catch (error) {

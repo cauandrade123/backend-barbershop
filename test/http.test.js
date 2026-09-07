@@ -32,3 +32,38 @@ test("rotas inexistentes retornam JSON 404", async () => {
   assert.equal(resposta.status, 404);
   assert.deepEqual(await resposta.json(), { erro: "Rota não encontrada" });
 });
+
+test("o liveness responde sem depender do banco", async () => {
+  const resposta = await fetch(`${baseUrl}/health`);
+
+  assert.equal(resposta.status, 200);
+  assert.deepEqual(await resposta.json(), { status: "ok" });
+});
+
+test("as respostas trazem os headers de segurança do helmet", async () => {
+  const resposta = await fetch(`${baseUrl}/health`);
+
+  assert.equal(resposta.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(resposta.headers.get("x-frame-options"), "SAMEORIGIN");
+  assert.equal(resposta.headers.get("x-powered-by"), null);
+});
+
+test("o login bloqueia após exceder o limite de tentativas", async () => {
+  const tentativa = () => fetch(`${baseUrl}/login`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    // Corpo inválido: barra na validação, antes de qualquer acesso ao banco.
+    body: JSON.stringify({ email: "nao-e-email", senha: "" })
+  });
+
+  const respostas = [];
+  for (let i = 0; i < 11; i++) {
+    respostas.push(await tentativa());
+  }
+
+  assert.equal(respostas[0].status, 400);
+  assert.equal(respostas.at(-1).status, 429);
+  assert.deepEqual(await respostas.at(-1).json(), {
+    erro: "Muitas tentativas de login. Tente novamente em alguns minutos."
+  });
+});
