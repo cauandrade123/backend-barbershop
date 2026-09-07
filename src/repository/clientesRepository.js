@@ -1,6 +1,7 @@
 import conection from "../database/conecction.js";
 import bcrypt from "bcrypt";
 import { createHttpError } from "../utils/httpError.js";
+import config from "../config.js";
 
 
 export async function criarUsuario(usuario) {
@@ -10,7 +11,7 @@ export async function criarUsuario(usuario) {
     values(?,?,?,?)
     `
 
-    const senhaHash = await bcrypt.hash(usuario.senha, 10);
+    const senhaHash = await bcrypt.hash(usuario.senha, config.bcryptRounds);
 
     try {
         let [registro] = await conection.query(SQL, [usuario.nome, usuario.email, usuario.telefone, senhaHash])
