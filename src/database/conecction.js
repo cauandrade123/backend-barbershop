@@ -1,23 +1,24 @@
 import mysql from 'mysql2/promise';
+import config from '../config.js';
 
 
 const conection = mysql.createPool({
-  host: process.env.DB_HOST || process.env.HOST,
-  user: process.env.DB_USER,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PWD,
+  host: config.banco.host,
+  user: config.banco.usuario,
+  database: config.banco.nome,
+  password: config.banco.senha,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
+  enableKeepAlive: true,
   typeCast: function (field, next) {
-     if (field.type === 'TINY' && field.length === 1) {
-            return (field.string() === '1');
-        } else if (field.type.includes('DECIMAL')) {
-            return Number(field.string());
-        } else {
-            return next();
-        }
+    if (field.type === 'TINY' && field.length === 1) {
+      return (field.string() === '1');
     }
+    // DECIMAL permanece string: converter para Number transforma dinheiro em
+    // ponto flutuante binário e 0.10 + 0.20 deixa de ser 0.30.
+    return next();
+  }
 })
 
 export async function verificarConexao() {
