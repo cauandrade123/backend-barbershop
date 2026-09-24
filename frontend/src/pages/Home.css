@@ -1,0 +1,133 @@
+.hero {
+  background: radial-gradient(circle at top right, #2c2419, var(--cor-preto));
+  color: var(--cor-creme);
+  padding: 5rem 0 4rem;
+  text-align: center;
+}
+
+.hero__selo {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  color: var(--cor-dourado);
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  color: var(--cor-creme);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  margin-bottom: 0.2em;
+}
+
+.hero__tagline {
+  font-size: 1.15rem;
+  color: var(--cor-creme-suave);
+  margin-bottom: 2rem;
+}
+
+.btn-grande {
+  padding: 1em 2.2em;
+  font-size: 1.05rem;
+}
+
+.btn-pequeno {
+  padding: 0.5em 1em;
+  font-size: 0.85rem;
+}
+
+.secao {
+  padding: 3.5rem 0;
+}
+
+.secao h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.secao--escura {
+  background: var(--cor-preto-suave);
+  color: var(--cor-creme);
+}
+
+.secao--escura h2 {
+  color: var(--cor-creme);
+}
+
+.secao--cta {
+  background: var(--cor-vinho);
+  color: var(--cor-creme);
+  text-align: center;
+}
+
+.secao--cta h2 {
+  color: var(--cor-creme);
+}
+
+.secao--cta__conteudo {
+  padding: 1rem 0;
+}
+
+.servicos-grid,
+.equipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.servico-card {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.servico-card__preco {
+  color: var(--cor-vinho);
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin: 0.3em 0 1em;
+}
+
+.equipe-card {
+  padding: 1.5rem;
+  text-align: center;
+  background: #fff;
+}
+
+.equipe-card__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--cor-dourado);
+  color: var(--cor-preto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0 auto 1rem;
+}
+
+.equipe-card__especialidade {
+  color: var(--cor-preto-suave);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.galeria-grid__item {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--raio);
+  display: flex;
+  align-items: flex-end;
+  padding: 0.75rem;
+  color: var(--cor-creme);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
