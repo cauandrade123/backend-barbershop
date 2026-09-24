@@ -26,6 +26,12 @@ A web api using nodeJS, mysql, docker, aws, and gateway of payment
 Para parar o banco: `docker compose down` (os dados continuam no volume).
 Para apagar os dados e recomeçar do zero: `docker compose down -v`.
 
+**Porta 3306 já em uso?** Se `docker compose up -d` der erro de porta ocupada
+(comum quando já existe um MySQL instalado localmente, ex. via XAMPP), edite
+o `.env` e mude `DB_PORT` para outra porta livre (ex. `DB_PORT=3307`), depois
+rode `docker compose down -v && docker compose up -d` de novo. A API lê essa
+mesma variável, então não precisa mudar mais nada.
+
 Variáveis obrigatórias: `DB_HOST` (ou `HOST` para compatibilidade), `DB_USER`, `DB_NAME`, `DB_PWD` e `JWT_SECRET`. A API testa a conexão com o banco antes de começar a aceitar requisições.
 
 ## Testes
