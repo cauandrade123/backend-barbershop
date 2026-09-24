@@ -1,0 +1,44 @@
+.pagina-formulario {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  background: var(--cor-creme-suave);
+}
+
+.pagina-formulario__cartao {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+}
+
+.pagina-formulario__cartao h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 0.2em;
+}
+
+.pagina-formulario__subtitulo {
+  text-align: center;
+  color: var(--cor-preto-suave);
+  margin-bottom: 1.75rem;
+  font-size: 0.95rem;
+}
+
+.pagina-formulario__rodape {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.pagina-formulario__rodape a {
+  color: var(--cor-vinho);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pagina-formulario__cartao .btn {
+  width: 100%;
+  margin-top: 0.5rem;
+}

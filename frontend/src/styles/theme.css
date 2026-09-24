@@ -1,0 +1,211 @@
+:root {
+  --cor-preto: #1b1712;
+  --cor-preto-suave: #26201a;
+  --cor-dourado: #c9a24b;
+  --cor-dourado-claro: #e4c877;
+  --cor-creme: #f3ead9;
+  --cor-creme-suave: #ece0c8;
+  --cor-vinho: #5c2020;
+  --cor-erro: #b3261e;
+  --cor-sucesso: #2f6b3a;
+
+  --fonte-titulo: "Playfair Display", Georgia, serif;
+  --fonte-corpo: "Inter", system-ui, sans-serif;
+
+  --raio: 6px;
+  --sombra: 0 12px 30px rgba(0, 0, 0, 0.25);
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--cor-creme);
+  color: var(--cor-preto);
+  font-family: var(--fonte-corpo);
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--fonte-titulo);
+  margin: 0 0 0.5em;
+  color: var(--cor-preto);
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: var(--fonte-corpo);
+  cursor: pointer;
+}
+
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+
+.pagina {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.pagina main {
+  flex: 1;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.75em 1.5em;
+  border-radius: var(--raio);
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primario {
+  background: var(--cor-dourado);
+  color: var(--cor-preto);
+}
+
+.btn-primario:hover {
+  background: var(--cor-dourado-claro);
+  box-shadow: var(--sombra);
+}
+
+.btn-secundario {
+  background: transparent;
+  color: var(--cor-creme);
+  border-color: var(--cor-dourado);
+}
+
+.btn-secundario:hover {
+  background: rgba(201, 162, 75, 0.15);
+}
+
+.btn-perigo {
+  background: var(--cor-erro);
+  color: var(--cor-creme);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cartao {
+  background: #fff;
+  border: 1px solid rgba(27, 23, 18, 0.08);
+  border-radius: var(--raio);
+  box-shadow: 0 6px 18px rgba(27, 23, 18, 0.06);
+}
+
+.faixa-navalha {
+  height: 6px;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--cor-vinho),
+    var(--cor-vinho) 10px,
+    var(--cor-creme) 10px,
+    var(--cor-creme) 20px,
+    var(--cor-preto) 20px,
+    var(--cor-preto) 30px
+  );
+}
+
+.mensagem-erro {
+  background: rgba(179, 38, 30, 0.1);
+  color: var(--cor-erro);
+  border: 1px solid rgba(179, 38, 30, 0.35);
+  border-radius: var(--raio);
+  padding: 0.75em 1em;
+  font-size: 0.9rem;
+}
+
+.mensagem-sucesso {
+  background: rgba(47, 107, 58, 0.1);
+  color: var(--cor-sucesso);
+  border: 1px solid rgba(47, 107, 58, 0.35);
+  border-radius: var(--raio);
+  padding: 0.75em 1em;
+  font-size: 0.9rem;
+}
+
+.rotulo-tag {
+  display: inline-block;
+  padding: 0.2em 0.7em;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tag-agendado {
+  background: rgba(201, 162, 75, 0.2);
+  color: #7a5c15;
+}
+
+.tag-cancelado {
+  background: rgba(179, 38, 30, 0.12);
+  color: var(--cor-erro);
+}
+
+.tag-concluido {
+  background: rgba(47, 107, 58, 0.12);
+  color: var(--cor-sucesso);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  margin-bottom: 1em;
+}
+
+.campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cor-preto-suave);
+}
+
+.campo input,
+.campo select {
+  padding: 0.65em 0.8em;
+  border-radius: var(--raio);
+  border: 1px solid rgba(27, 23, 18, 0.2);
+  font-size: 1rem;
+  font-family: var(--fonte-corpo);
+  background: #fff;
+}
+
+.campo input:focus,
+.campo select:focus {
+  outline: 2px solid var(--cor-dourado);
+  outline-offset: 1px;
+}
