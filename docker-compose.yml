@@ -1,0 +1,21 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: barbearia-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PWD:-troque_esta_senha}
+      MYSQL_DATABASE: ${DB_NAME:-barbearia}
+    ports:
+      - "3306:3306"
+    volumes:
+      - barbearia-mysql-data:/var/lib/mysql
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PWD:-troque_esta_senha}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  barbearia-mysql-data:
