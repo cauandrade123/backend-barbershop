@@ -1,0 +1,51 @@
+.meus-agendamentos h1 {
+  margin-bottom: 1.5rem;
+}
+
+.meus-agendamentos__vazio {
+  padding: 2.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.meus-agendamentos__tabela-wrapper {
+  overflow-x: auto;
+  padding: 0.5rem;
+}
+
+.meus-agendamentos__tabela {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.meus-agendamentos__tabela th,
+.meus-agendamentos__tabela td {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(27, 23, 18, 0.08);
+  font-size: 0.9rem;
+}
+
+.meus-agendamentos__tabela th {
+  color: var(--cor-preto-suave);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.agendamento-linha__form {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.agendamento-linha__form input {
+  padding: 0.4em 0.5em;
+  border-radius: var(--raio);
+  border: 1px solid rgba(27, 23, 18, 0.2);
+}
