@@ -16,7 +16,7 @@ function formatarData(data) {
 export function AppointmentRow({ agendamento, onRemarcar, remarcando }) {
   const [editando, setEditando] = useState(false);
   const [novaData, setNovaData] = useState(agendamento.data_agendamento?.slice(0, 10) || "");
-  const [novaHora, setNovaHora] = useState(agendamento.hora_agendamento || "");
+  const [novaHora, setNovaHora] = useState(agendamento.hora_agendamento?.slice(0, 5) || "");
 
   const podeRemarcar = agendamento.status === "agendado";
 
@@ -54,7 +54,7 @@ export function AppointmentRow({ agendamento, onRemarcar, remarcando }) {
           </form>
         ) : (
           <>
-            {formatarData(agendamento.data_agendamento)} às {agendamento.hora_agendamento}
+            {formatarData(agendamento.data_agendamento)} às {agendamento.hora_agendamento?.slice(0, 5)}
           </>
         )}
       </td>

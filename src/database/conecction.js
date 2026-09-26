@@ -11,6 +11,8 @@ const conection = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   enableKeepAlive: true,
+  // DATE como "YYYY-MM-DD"; como objeto Date o JSON vira ISO com fuso e a data pode deslocar um dia.
+  dateStrings: ["DATE"],
   typeCast: function (field, next) {
     if (field.type === 'TINY' && field.length === 1) {
       return (field.string() === '1');
