@@ -1,0 +1,56 @@
+.admin h1 {
+  margin-bottom: 1.5rem;
+}
+
+.admin__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .admin__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin__tabela-wrapper,
+.admin__novo-servico {
+  padding: 1.5rem;
+}
+
+.admin__tabela-wrapper h2,
+.admin__novo-servico h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.admin__tabela-scroll {
+  overflow-x: auto;
+}
+
+.admin__tabela {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 480px;
+}
+
+.admin__tabela th,
+.admin__tabela td {
+  text-align: left;
+  padding: 0.8rem 0.9rem;
+  border-bottom: 1px solid rgba(27, 23, 18, 0.08);
+  font-size: 0.88rem;
+}
+
+.admin__tabela th {
+  color: var(--cor-preto-suave);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.admin__novo-servico .btn {
+  width: 100%;
+}
