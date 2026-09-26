@@ -54,7 +54,7 @@ export function AdminDashboard() {
                       <td>{item.nome_cliente}</td>
                       <td>{item.nome_servico}</td>
                       <td>
-                        {formatarData(item.data_agendamento)} às {item.hora_agendamento}
+                        {formatarData(item.data_agendamento)} às {item.hora_agendamento?.slice(0, 5)}
                       </td>
                       <td>
                         <span className={`rotulo-tag ${TAG_POR_STATUS[item.status] || "tag-agendado"}`}>
