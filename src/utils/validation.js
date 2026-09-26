@@ -1,4 +1,21 @@
 import { createHttpError } from "./httpError.js";
+import config from "../config.js";
+
+// "Hoje" é o dia no fuso da barbearia, não o do servidor: com o processo em
+// UTC e a loja em São Paulo, herdar o fuso do servidor faria o dia virar às
+// 21h e bloquear agendamentos legítimos para o dia seguinte.
+function hojeNoFusoDoNegocio() {
+  const partes = new Intl.DateTimeFormat("en-US", {
+    timeZone: config.fusoHorario,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+
+  const valor = (tipo) => partes.find((parte) => parte.type === tipo).value;
+
+  return `${valor("year")}-${valor("month")}-${valor("day")}`;
+}
 
 function corpoValido(corpo) {
   if (!corpo || typeof corpo !== "object" || Array.isArray(corpo)) {
@@ -41,14 +58,13 @@ function dataEHora(dataAgendamento, horaAgendamento) {
   }
 
   const [ano, mes, dia] = dataAgendamento.split("-").map(Number);
-  const data = new Date(ano, mes - 1, dia);
-  if (data.getFullYear() !== ano || data.getMonth() !== mes - 1 || data.getDate() !== dia) {
+  const data = new Date(Date.UTC(ano, mes - 1, dia));
+  if (data.getUTCFullYear() !== ano || data.getUTCMonth() !== mes - 1 || data.getUTCDate() !== dia) {
     throw createHttpError(400, "Data de agendamento inválida");
   }
 
-  const hoje = new Date();
-  hoje.setHours(0, 0, 0, 0);
-  if (data < hoje) {
+  // Ambos estão em YYYY-MM-DD, então a comparação lexicográfica é cronológica.
+  if (dataAgendamento < hojeNoFusoDoNegocio()) {
     throw createHttpError(400, "Não é possível agendar uma data no passado");
   }
 
@@ -99,7 +115,9 @@ export function validarServico(corpo) {
 
   return {
     nome: textoObrigatorio(corpo.nome, "Nome do serviço", 2, 100),
-    preco: Number(preco.toFixed(2))
+    // String com 2 casas: o MySQL parseia o DECIMAL exatamente, sem passar
+    // por ponto flutuante.
+    preco: preco.toFixed(2)
   };
 }
 

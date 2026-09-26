@@ -3,8 +3,10 @@ import pagamentoController from "../controllers/pagamentoController.js"
 import clientesController from "../controllers/clientesController.js"
 import servicosController from "../controllers/servicosController.js"
 import administratorController from "../controllers/administratorController.js"
+import healthController from "../controllers/healthController.js"
 
 export default function rotas (server){
+    server.use(healthController)
     server.use(pagamentoController)
     server.use(clientesController)
     server.use(agendamentoController)
