@@ -35,11 +35,19 @@ export async function requisitar(caminho, { method = "GET", body, autenticado = 
     }
   }
 
-  const resposta = await fetch(`${API_URL}${caminho}`, {
-    method,
-    headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined
-  });
+  let resposta;
+  try {
+    resposta = await fetch(`${API_URL}${caminho}`, {
+      method,
+      headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined
+    });
+  } catch {
+    throw new ErroApi(
+      `Não foi possível conectar à API em ${API_URL}. Verifique se o backend está rodando e se VITE_API_URL está correto.`,
+      0
+    );
+  }
 
   let dados = null;
   const texto = await resposta.text();
