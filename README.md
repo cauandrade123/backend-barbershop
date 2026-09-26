@@ -52,4 +52,21 @@ Preços trafegam como string decimal (`"45.00"`), não como número. Converter `
 
 ## Testes
 
+<<<<<<< HEAD
 Execute `npm test` para rodar os testes de validação e das rotas. Eles não precisam de banco.
+=======
+Execute `npm test` para rodar os testes de validação e das rotas sem banco de dados.
+
+## Frontend
+
+A pasta `frontend/` tem uma SPA em React + Vite que consome esta API (cadastro,
+login, listagem de serviços, agendamento, remarcação e um painel admin). Para
+rodar:
+
+1. `cd frontend && npm install`.
+2. Copie `frontend/.env.example` para `frontend/.env` e ajuste `VITE_API_URL`
+   se a API não estiver em `http://localhost:3000`.
+3. `npm run dev` (com a API rodando em paralelo).
+
+Veja `frontend/README.md` para mais detalhes.
+>>>>>>> 2a3dbe9f5ae31ba8588bff1183f178ea7d8452a7
