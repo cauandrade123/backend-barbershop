@@ -1,5 +1,5 @@
 # backend-barbershop
-A web api using nodeJS, mysql, docker, aws, and gateway of payment
+API de agendamento para barbearias com Node.js, Express e MySQL.
 
 ## Execução 100% local (com Docker só para o MySQL)
 
