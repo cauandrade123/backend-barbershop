@@ -44,7 +44,7 @@ export function Agendar() {
         data_agendamento: data,
         hora_agendamento: hora
       });
-      navegar("/pagamento-confirmado");
+      navegar("/meus-agendamentos");
     } catch (erroCapturado) {
       setErro(erroCapturado instanceof ErroApi ? erroCapturado.message : "Não foi possível agendar. Tente novamente.");
     } finally {

@@ -1,7 +1,7 @@
 {
   "name": "backend-barbearia",
   "version": "1.0.0",
-  "description": "A web api using nodeJS, mysql, docker, aws, and gateway of payment",
+  "description": "API de agendamento para barbearias com Node.js, Express e MySQL",
   "main": "src/server.js",
   "scripts": {
     "test": "node --test",

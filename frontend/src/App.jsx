@@ -7,7 +7,6 @@ import { Home } from "./pages/Home.jsx";
 import { Login } from "./pages/Login.jsx";
 import { Cadastro } from "./pages/Cadastro.jsx";
 import { Agendar } from "./pages/Agendar.jsx";
-import { PagamentoConfirmado } from "./pages/PagamentoConfirmado.jsx";
 import { MeusAgendamentos } from "./pages/MeusAgendamentos.jsx";
 import { AdminDashboard } from "./pages/admin/AdminDashboard.jsx";
 
@@ -27,14 +26,6 @@ function App() {
               element={
                 <RotaProtegida>
                   <Agendar />
-                </RotaProtegida>
-              }
-            />
-            <Route
-              path="/pagamento-confirmado"
-              element={
-                <RotaProtegida>
-                  <PagamentoConfirmado />
                 </RotaProtegida>
               }
             />

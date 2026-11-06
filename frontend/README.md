@@ -17,12 +17,12 @@ A API precisa estar rodando em paralelo (veja o README na raiz do repo).
 ## Estrutura
 
 - `src/api/` — chamadas HTTP para cada recurso da API (auth, serviços,
-  agendamentos, pagamento) e o wrapper `client.js` que injeta o token JWT.
+  agendamentos) e o wrapper `client.js` que injeta o token JWT.
 - `src/context/AuthContext.jsx` — sessão do usuário (token + role) persistida
   em `localStorage`.
 - `src/components/` — Navbar, rodapé, proteção de rotas e cards reutilizáveis.
 - `src/pages/` — páginas públicas (Home, Login, Cadastro), de cliente
-  (Agendar, Meus agendamentos, Pagamento confirmado) e admin
+  (Agendar, Meus agendamentos) e admin
   (`pages/admin/`).
 
 ## O que é dinâmico vs. estático

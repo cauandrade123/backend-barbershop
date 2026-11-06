@@ -19,13 +19,6 @@ after(async () => {
   await new Promise((resolve, reject) => servidor.close((error) => error ? reject(error) : resolve()));
 });
 
-test("a confirmação de pagamento sempre encerra a resposta", async () => {
-  const resposta = await fetch(`${baseUrl}/deucerto`);
-
-  assert.equal(resposta.status, 200);
-  assert.deepEqual(await resposta.json(), { mensagem: "Pagamento confirmado" });
-});
-
 test("rotas inexistentes retornam JSON 404", async () => {
   const resposta = await fetch(`${baseUrl}/inexistente`);
 
